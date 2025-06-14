@@ -1,8 +1,6 @@
 use crate::modules::json_io::JsonData;
 
 #[cfg(target_arch = "wasm32")]
-use wasm_bindgen::prelude::*;
-#[cfg(target_arch = "wasm32")]
 use wasm_bindgen::prelude::wasm_bindgen;
 
 #[derive(serde::Deserialize, serde::Serialize)]
@@ -61,18 +59,35 @@ impl eframe::App for TemplateApp {
 
             ui.separator();
             if ui.button("Показать видеопоток").clicked() {
-                #[cfg(target_arch = "wasm32")]
-                {
-                    show_video_player("http://localhost:8080/playlist.m3u8");
-                }
+                try_show_video_player("http://localhost:8080/playlist.m3u8");
             }
         });
     }
 }
 
+fn try_show_video_player(url: &str) {
+    #[cfg(target_arch = "wasm32")]
+    unsafe {
+        // Здесь можно добавить свою логику проверки доступности потока
+        if url.is_empty() {
+            web_sys::window()
+                .unwrap()
+                .alert_with_message("Поток недоступен или ffmpeg не настроен")
+                .ok();
+        } else {
+            show_video_player(url);
+        }
+    }
+    #[cfg(not(target_arch = "wasm32"))]
+    {
+        // Для нативной версии можно просто логировать
+        println!("Поток недоступен или ffmpeg не настроен");
+    }
+}
+
 #[cfg(target_arch = "wasm32")]
-#[wasm_bindgen(module = "/dist/eframe_template.js")]
+#[wasm_bindgen]
 extern "C" {
-    #[wasm_bindgen(js_name = showVideoPlayer)]
+    #[wasm_bindgen(js_namespace = window, js_name = showVideoPlayer)]
     fn show_video_player(url: &str);
 }

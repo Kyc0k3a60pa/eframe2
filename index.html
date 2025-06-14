@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Cache-Control" content="no-store" />
 
 <!-- Disable zooming: -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -140,6 +141,44 @@
                 navigator.serviceWorker.register('sw.js');
             });
         }
+    </script>
+
+    <script>
+        window.showVideoPlayer = function(url) {
+            // Удаляем старый плеер, если он уже есть
+            let old = document.getElementById("my-video-player");
+            if (old) old.remove();
+
+            // Создаём контейнер
+            let div = document.createElement("div");
+            div.id = "my-video-player";
+            div.style.position = "fixed";
+            div.style.top = "20px";
+            div.style.right = "20px";
+            div.style.zIndex = "1000";
+            div.style.background = "#222";
+            div.style.padding = "10px";
+            div.style.borderRadius = "8px";
+
+            // Кнопка закрытия
+            let close = document.createElement("button");
+            close.innerText = "×";
+            close.style.float = "right";
+            close.style.marginLeft = "8px";
+            close.onclick = () => div.remove();
+            div.appendChild(close);
+
+            // Сам видеоплеер
+            let video = document.createElement("video");
+            video.src = url;
+            video.controls = true;
+            video.autoplay = true;
+            video.style.width = "320px";
+            video.style.height = "180px";
+            div.appendChild(video);
+
+            document.body.appendChild(div);
+        };
     </script>
 </body>
 
