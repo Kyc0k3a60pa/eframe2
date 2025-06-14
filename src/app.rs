@@ -59,29 +59,22 @@ impl eframe::App for TemplateApp {
 
             ui.separator();
             if ui.button("Показать видеопоток").clicked() {
-                try_show_video_player("http://localhost:8080/playlist.m3u8");
+                try_show_video_player("http://localhost:8080/playlist.m3u8", "my-video-player");
+            }
+            if ui.button("Показать поток: Смешарики").clicked() {
+                try_show_video_player("/streams/smeshariki/playlist.m3u8", "my-video-player-smeshariki");
+            }
+            if ui.button("Показать поток: Пони").clicked() {
+                try_show_video_player("/streams/poni/playlist.m3u8", "my-video-player-poni");
             }
         });
     }
 }
 
-fn try_show_video_player(url: &str) {
+fn try_show_video_player(url: &str, id: &str) {
     #[cfg(target_arch = "wasm32")]
     unsafe {
-        // Здесь можно добавить свою логику проверки доступности потока
-        if url.is_empty() {
-            web_sys::window()
-                .unwrap()
-                .alert_with_message("Поток недоступен или ffmpeg не настроен")
-                .ok();
-        } else {
-            show_video_player(url);
-        }
-    }
-    #[cfg(not(target_arch = "wasm32"))]
-    {
-        // Для нативной версии можно просто логировать
-        println!("Поток недоступен или ffmpeg не настроен");
+        show_video_player_with_id(url, id);
     }
 }
 
@@ -89,5 +82,5 @@ fn try_show_video_player(url: &str) {
 #[wasm_bindgen]
 extern "C" {
     #[wasm_bindgen(js_namespace = window, js_name = showVideoPlayer)]
-    fn show_video_player(url: &str);
+    fn show_video_player_with_id(url: &str, id: &str);
 }

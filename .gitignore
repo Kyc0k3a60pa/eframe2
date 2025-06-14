@@ -1,9 +1,12 @@
 # Mac stuff:
 .DS_Store
-
+.github
 # trunk output folder
 dist
-
+nginx
+ffmpeg
+assets
+v
 # Rust compile target directories:
 target
 target_ra
@@ -11,3 +14,4 @@ target_wasm
 
 # https://github.com/lycheeverse/lychee
 .lycheecache
+streams.log

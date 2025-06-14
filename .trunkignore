@@ -1,0 +1,15 @@
+*
+!src/
+!index.html
+!Cargo.toml
+!Cargo.lock
+!Trunk.toml
+!assets/
+!.trunkignore
+target/
+.git/
+.vscode/
+.idea/
+*.swp
+*.tmp
+*.log

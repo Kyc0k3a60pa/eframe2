@@ -24,6 +24,7 @@
     <link data-trunk rel="copy-file" href="assets/icon-256.png" data-target-path="assets"/>
     <link data-trunk rel="copy-file" href="assets/icon_ios_touch_192.png" data-target-path="assets"/>
     <link data-trunk rel="copy-file" href="assets/maskable_icon_x512.png" data-target-path="assets"/>
+    
 
 
     <link rel="manifest" href="manifest.json">
@@ -143,24 +144,23 @@
         }
     </script>
 
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
     <script>
-        window.showVideoPlayer = function(url) {
-            // Удаляем старый плеер, если он уже есть
-            let old = document.getElementById("my-video-player");
+        window.showVideoPlayer = function(url, id = "my-video-player") {
+            let old = document.getElementById(id);
             if (old) old.remove();
 
-            // Создаём контейнер
             let div = document.createElement("div");
-            div.id = "my-video-player";
+            div.id = id;
             div.style.position = "fixed";
-            div.style.top = "20px";
+            div.style.top = id === "my-video-player" ? "20px" : "220px";
             div.style.right = "20px";
             div.style.zIndex = "1000";
             div.style.background = "#222";
             div.style.padding = "10px";
             div.style.borderRadius = "8px";
 
-            // Кнопка закрытия
             let close = document.createElement("button");
             close.innerText = "×";
             close.style.float = "right";
@@ -168,16 +168,35 @@
             close.onclick = () => div.remove();
             div.appendChild(close);
 
-            // Сам видеоплеер
             let video = document.createElement("video");
-            video.src = url;
             video.controls = true;
             video.autoplay = true;
             video.style.width = "320px";
             video.style.height = "180px";
+            video.style.background = "#000";
             div.appendChild(video);
 
+            // Скрываем play/pause через CSS
+            setTimeout(() => {
+                let controls = div.querySelectorAll('button, input[type="range"]');
+                controls.forEach(ctrl => {
+                    if (ctrl.title?.toLowerCase().includes("play") || ctrl.title?.toLowerCase().includes("pause")) {
+                        ctrl.style.display = "none";
+                    }
+                });
+            }, 500);
+
             document.body.appendChild(div);
+
+            if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                video.src = url;
+            } else if (window.Hls) {
+                var hls = new Hls();
+                hls.loadSource(url);
+                hls.attachMedia(video);
+            } else {
+                div.appendChild(document.createTextNode("Ваш браузер не поддерживает HLS"));
+            }
         };
     </script>
 </body>
