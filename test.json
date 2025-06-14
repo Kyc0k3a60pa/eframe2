@@ -1,0 +1,29 @@
+{
+    "bean": {
+        "_v": 0,
+        "addr": "185.246.152.176",
+        "name": "ndr-q6r0e0nz",
+        "pass": "6335b589-8790-4f53-8836-aea36dd34d18",
+        "port": 49338,
+        "stream": {
+            "ed_len": 0,
+            "insecure": false,
+            "mux_s": 0,
+            "net": "tcp",
+            "pbk": "EISSS-fxvuAnuLsFy5wRNwJV_uuQW9jC99BBrKt9NA0",
+            "sec": "tls",
+            "sid": "84",
+            "sni": "yahoo.com",
+            "spx": "/",
+            "utls": "chrome"
+        }
+    },
+    "gid": 0,
+    "id": 4,
+    "traffic": {
+        "dl": 1266312595,
+        "ul": 44869999
+    },
+    "type": "vless",
+    "yc": 0
+}

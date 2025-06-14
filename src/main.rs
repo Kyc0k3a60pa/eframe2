@@ -26,6 +26,11 @@ fn main() -> eframe::Result {
 
 // When compiling to web using trunk:
 #[cfg(target_arch = "wasm32")]
+use wasm_bindgen::prelude::wasm_bindgen;
+
+
+
+#[cfg(target_arch = "wasm32")]
 fn main() {
     use eframe::wasm_bindgen::JsCast as _;
 
